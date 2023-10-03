@@ -75,6 +75,7 @@
     </tbody>
   </table>
   <div style="display: flex; flex-wrap: wrap">
+    {% if data['show_pic_1'] %}
     <figure style="flex: 0 1 500px; margin: 10px">
       <figcaption>股票庫存佔比圖</figcaption>
       <img
@@ -83,7 +84,7 @@
         alt="pie chart for stock"
       />
     </figure>
-
+    {% endif %} {% if data['show_pic_2'] %}
     <figure style="flex: 0 1 500px; margin: 10px">
       <figcaption>資產比例佔比圖</figcaption>
       <img
@@ -92,6 +93,7 @@
         alt="pie chart for stock"
       />
     </figure>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

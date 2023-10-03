@@ -4,6 +4,7 @@ import math
 import sqlite3
 from datetime import datetime
 import matplotlib.pyplot as plt
+import os
 import matplotlib
 matplotlib.use('agg')
 
@@ -92,8 +93,6 @@ def home():
     for stock in stock_info:
         stock['value_percentage'] = round(
             stock['total_value'] * 100 / total_stock_value, 2)
-    data = {'total': total, 'cash_result': cash_result, 'td': taiwanese_dollars,
-            'ud': us_dollars, 'currency': currency["USDTWD"]["Exrate"], 'stock_info': stock_info}
 
     # 繪製股票圓餅圖
     if len(unique_stock_list) != 0:
@@ -105,17 +104,32 @@ def home():
         fig.subplots_adjust(top=1, bottom=0, right=1,
                             left=0, hspace=0, wspace=0)
         plt.savefig('static/piechart.jpg', dpi=200)
+    else:
+        try:
+            os.remove('static/piechart.jpg')
+        except:
+            pass
 
     # 繪製股票、現金圓餅圖
     if us_dollars != 0 or taiwanese_dollars != 0 or total_stock_value != 0:
         labels = ('USD', 'TWD', 'Stock')
         sizes = (us_dollars * currency["USDTWD"]["Exrate"],
-                taiwanese_dollars, total_stock_value)
+                 taiwanese_dollars, total_stock_value)
         print(sizes)
         fig, ax = plt.subplots(figsize=(6, 5))
         ax.pie(sizes, labels=labels, autopct=None, shadow=False)
-        fig.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
+        fig.subplots_adjust(top=1, bottom=0, right=1,
+                            left=0, hspace=0, wspace=0)
         plt.savefig('static/piechart2.jpg', dpi=200)
+    else:
+        try:
+            os.remove('static/piechart2.jpg')
+        except:
+            pass
+
+    data = {'show_pic_1': os.path.exists('static/piechart.jpg'), 'show_pic_2': os.path.exists('static/piechart2.jpg'),
+            'total': total, 'cash_result': cash_result, 'td': taiwanese_dollars,
+            'ud': us_dollars, 'currency': currency["USDTWD"]["Exrate"], 'stock_info': stock_info}
 
     return render_template('index.html', data=data)
 
